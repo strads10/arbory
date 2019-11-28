@@ -2,12 +2,19 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
-interface RendererInterface extends Renderable
+interface RendererInterface
 {
+    /**
+     * Get the evaluated contents of the object.
+     *
+     * @return Element
+     */
+    public function render();
+
     /**
      * @param FieldInterface $field
      *

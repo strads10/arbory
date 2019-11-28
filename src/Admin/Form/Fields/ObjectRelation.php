@@ -126,7 +126,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @return Relation|Collection|null
+     * @return Relation|Collection|mixed
      */
     public function getValue()
     {

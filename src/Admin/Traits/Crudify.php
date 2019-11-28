@@ -37,7 +37,7 @@ trait Crudify
     protected $module;
 
     /**
-     * @return Model|Builder
+     * @return Model
      */
     public function resource()
     {

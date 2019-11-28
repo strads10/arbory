@@ -8,6 +8,8 @@ use Arbory\Base\Admin\Form\Controls\CheckboxControl as CheckboxControl;
 
 /**
  * Class Checkbox.
+ *
+ * @method void setValue(bool $value)
  */
 class Checkbox extends ControlField
 {
