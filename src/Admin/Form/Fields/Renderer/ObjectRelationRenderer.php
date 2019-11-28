@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Content\Relation;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
@@ -75,7 +76,7 @@ class ObjectRelationRenderer implements RendererInterface
             $values = $values instanceof Collection ? $values : new Collection([$values]);
 
             foreach ($values as $value) {
-                $relation = $value->related()->first();
+                $relation = $value instanceof Relation ? $value->related()->first() : $value;
 
                 if ($relation) {
                     $items[] = $this->buildRelationalItemElement($relation);
