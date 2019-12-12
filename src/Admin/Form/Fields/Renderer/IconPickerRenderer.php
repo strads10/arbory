@@ -49,7 +49,7 @@ class IconPickerRenderer extends SelectFieldRenderer
      */
     protected function getSvgIconElement($id)
     {
-        if (! $id) {
+        if (!$id) {
             return Html::svg();
         }
 
@@ -57,16 +57,13 @@ class IconPickerRenderer extends SelectFieldRenderer
         $field = $this->field;
         $iconNode = $field->getIconContent($id);
 
-        if (! $iconNode) {
+        if (!$iconNode) {
             return Html::div()->addClass('element');
         }
 
-        $node = simplexml_load_string($iconNode->asXML());
-        $path = array_first($node->xpath('/symbol//path[@d]'));
+        $content = $this->getIconContent($iconNode);
 
-        if ($path) {
-            $content = $path->asXML();
-        } else {
+        if (!$content) {
             return Html::div()->addClass('element');
         }
 
@@ -104,5 +101,25 @@ class IconPickerRenderer extends SelectFieldRenderer
         }
 
         return sprintf('0 0 %d %d', $width, $height);
+    }
+
+    /**
+     * @param \SimpleXMLElement $iconNode
+     * @return string
+     */
+    protected function getIconContent(\SimpleXMLElement $iconNode): string
+    {
+        $node = simplexml_load_string($iconNode->asXML());
+
+        /** @var \SimpleXMLElement $symbol */
+        $symbol = array_first($node->xpath('/symbol'));
+        $content = '';
+
+        /** @var \SimpleXMLElement $element */
+        foreach ($symbol->children() as $element) {
+            $content .= $element->asXML();
+        }
+
+        return $content;
     }
 }
