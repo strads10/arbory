@@ -110,7 +110,7 @@ class Html
     }
 
     /**
-     * @param null $content
+     * @param Element|null $content
      * @return Element
      */
     public static function link($content = null)
