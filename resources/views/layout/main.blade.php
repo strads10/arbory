@@ -6,8 +6,16 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href="{{ mix('/css/application.css', 'arbory') }}" media="all" rel="stylesheet"/>
         <link href="{{ mix('/css/controllers/nodes.css', 'arbory') }}" media="all" rel="stylesheet"/>
-
         <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <script>
+            var arboryConfig = {
+                fileManagerUrl: {
+                    show: "{{ route('unisharp.lfm.show') }}",
+                    upload: "{{ route('unisharp.lfm.upload') }}"
+                }
+            };
+        </script>
 
         @foreach($assets->getCss() as $css)
             <link href="{{ $css }}" media="all" rel="stylesheet"/>
