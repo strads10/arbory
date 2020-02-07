@@ -25,15 +25,18 @@ export default class RichText {
     }
 
     initialize() {
+        const showUrl = arboryConfig.fileManagerUrl.show;
+        const uploadUrl = arboryConfig.fileManagerUrl.upload;
+
         let token = this.getToken();
         let textarea = this.getTextarea();
         let config = Object.assign(this.getDefaultConfig(), {
             width: '100%',
             height: textarea.outerHeight(),
-            filebrowserImageBrowseUrl: '/admin/filemanager?type=Images',
-            filebrowserImageUploadUrl: '/admin/file-manager/upload?type=Images&responseType=json&_token=' + token,
-            filebrowserBrowseUrl: '/admin/filemanager?type=Files',
-            filebrowserUploadUrl: '/admin/file-manager/upload?type=Files&responseType=json&_token=' + token
+            filebrowserImageBrowseUrl: `${showUrl}?type=Images`,
+            filebrowserImageUploadUrl: `${uploadUrl}?type=Images&responseType=json&_token=${token}`,
+            filebrowserBrowseUrl: `${showUrl}?type=Files`,
+            filebrowserUploadUrl: `${uploadUrl}?type=Files&responseType=json&_token=${token}`
         });
 
         if (!textarea.attr('id')) {
