@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Admin\Traits\EventDispatcher;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Form.
@@ -56,6 +57,11 @@ class Form
      * @var
      */
     protected $namespace = 'resource';
+
+    /**
+     * @var bool
+     */
+    protected $isUsingTransactions = false;
 
     /**
      * Form constructor.
@@ -157,13 +163,15 @@ class Form
      */
     public function store(Request $request)
     {
-        $this->trigger('create.before', $request);
+        $this->databaseInteraction(function () use ($request) {
+            $this->trigger('create.before', $request);
 
-        $this->model->save();
+            $this->model->save();
 
-        $this->trigger('create.after', $request);
+            $this->trigger('create.after', $request);
 
-        $this->model->push();
+            $this->model->push();
+        });
     }
 
     /**
@@ -171,26 +179,50 @@ class Form
      */
     public function update(Request $request)
     {
-        $this->trigger('update.before', $request);
+        $this->databaseInteraction(function () use ($request) {
+            $this->trigger('update.before', $request);
 
-        $this->model->save();
+            $this->model->save();
 
-        $this->trigger('update.after', $request);
+            $this->trigger('update.after', $request);
 
-        $this->model->push();
+            $this->model->push();
+        });
     }
 
-    public function destroy()
+    /**
+     * @return void
+     */
+    public function destroy(): void
     {
-        $this->trigger('delete.before', $this);
+        $this->databaseInteraction(function () {
+            $this->trigger('delete.before', $this);
 
-        $this->model->delete();
+            $this->model->delete();
 
-        $this->model->morphMany(Relation::class, 'related')->get()->each(function (Relation $relation) {
-            $relation->delete();
+            $this->model
+                ->morphMany(Relation::class, 'related')
+                ->get()
+                ->each(function (Relation $relation) {
+                    $relation->delete();
+                });
+
+            $this->trigger('delete.after', $this);
         });
+    }
 
-        $this->trigger('delete.after', $this);
+    /**
+     * @param callable $callback
+     * @return void
+     */
+    protected function databaseInteraction(callable $callback): void
+    {
+        if (!$this->isUsingTransactions) {
+            $callback();
+            return;
+        }
+
+        DB::transaction($callback);
     }
 
     /**
@@ -235,6 +267,17 @@ class Form
         }
 
         return request(static::INPUT_RETURN_URL);
+    }
+
+    /**
+     * @param bool $useTransactions
+     * @return $this
+     */
+    public function useTransactions(bool $useTransactions): self
+    {
+        $this->isUsingTransactions = $useTransactions;
+
+        return $this;
     }
 
     /**
