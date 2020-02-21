@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Http\Middleware\ArborySetLocaleMiddleware;
 use Illuminate\Routing\Router;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Filesystem\Filesystem;
@@ -43,6 +44,7 @@ class RoutesServiceProvider extends ServiceProvider
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             ArboryAdminHasAllowedIpMiddleware::class,
+            ArborySetLocaleMiddleware::class
         ]);
 
         $router->aliasMiddleware('arbory.admin_auth', ArboryAdminAuthMiddleware::class);
@@ -52,6 +54,7 @@ class RoutesServiceProvider extends ServiceProvider
         $router->aliasMiddleware('arbory.admin_has_access', ArboryAdminHasAccessMiddleware::class);
         $router->aliasMiddleware('arbory.route_redirect', ArboryRouteRedirectMiddleware::class);
         $router->aliasMiddleware('arbory.admin_has_allowed_ip', ArboryAdminHasAllowedIpMiddleware::class);
+        $router->aliasMiddleware('arbory.set_locale', ArborySetLocaleMiddleware::class);
 
         $this->app->booted(function ($app) {
             $app[Kernel::class]->prependMiddleware(ArboryRouteRedirectMiddleware::class);
