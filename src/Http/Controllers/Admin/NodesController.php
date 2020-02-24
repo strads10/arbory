@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Nodes\Node;
+use Baum\Extensions\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
 use Illuminate\Routing\Controller;
@@ -102,6 +103,7 @@ class NodesController extends Controller
             $grid->column('name');
         });
         $grid->setFilter(new Filter($this->resource()));
+
         $grid->setRenderer(new Renderer($grid));
 
         return $grid;
@@ -210,31 +212,6 @@ class NodesController extends Controller
         });
 
         return view('arbory::dialogs.content_types', ['types' => $types]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function nodeRepositionApi(Request $request)
-    {
-        /**
-         * @var NodesRepository
-         * @var Node            $node
-         */
-        $nodes = new NodesRepository;
-        $node = $nodes->findOneBy('id', $request->input('id'));
-        $toLeftId = $request->input('toLeftId');
-        $toRightId = $request->input('toRightId');
-
-        if ($toLeftId) {
-            $node->moveToRightOf($nodes->findOneBy('id', $toLeftId));
-        } elseif ($toRightId) {
-            $node->moveToLeftOf($nodes->findOneBy('id', $toRightId));
-        }
-
-        return \Response::make();
     }
 
     /**

@@ -32,6 +32,11 @@ class Renderer implements Renderable
     protected $page;
 
     /**
+     * @var string
+     */
+    protected $sortableUrl;
+
+    /**
      * Renderer constructor.
      * @param Grid $grid
      */
@@ -49,6 +54,16 @@ class Renderer implements Renderable
     }
 
     /**
+     * @return string
+     */
+    public function getSortableUrl(): string
+    {
+        return $this->grid()->getModule()->url('api', [
+            'name' => 'reposition'
+        ]);
+    }
+
+    /**
      * @return Content
      */
     protected function table()
@@ -63,6 +78,9 @@ class Renderer implements Renderable
                 Html::div(
                     $this->buildTree($this->page->getCollection(), 1)
                 )->addClass('collection')
+                ->addAttributes([
+                    'data-sortable-url' => $this->getSortableUrl()
+                ])
             )->addClass('body'),
         ]);
     }

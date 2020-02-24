@@ -107,6 +107,7 @@ class NodeStoreItem {
 jQuery(document).ready(() => {
     let body = jQuery('body.controller-nodes');
     let collection = jQuery('.collection');
+    const collectionUrl = collection.data('sortable-url');
 
     body.on('click', '.dialog .node-cell label', function() {
         jQuery('.dialog .node-cell label').removeClass('selected');
@@ -128,7 +129,7 @@ jQuery(document).ready(() => {
                 stop: (event, ui) => {
                     node = new Node(ui.item);
 
-                    jQuery.post('/admin/nodes/api/node_reposition', {
+                    jQuery.post(collectionUrl, {
                         _token: token,
                         id: node.id,
                         toLeftId: node.getLeftSibling().id,
