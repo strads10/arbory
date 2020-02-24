@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Traits;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
+use Baum\Extensions\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
@@ -414,6 +415,32 @@ trait Crudify
         }
 
         return $slug;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function repositionApi(Request $request)
+    {
+        /** @var Collection $node */
+        $node = $this->resource()->find($request->input('id'));
+
+        $toLeftId = $request->input('toLeftId');
+        $toRightId = $request->input('toRightId');
+
+        if ($toLeftId) {
+            $findLeftNode = $this->resource()->find($toLeftId);
+
+            $node->moveToRightOf($findLeftNode);
+        } elseif ($toRightId) {
+            $findRightNode = $this->resource()->find($toRightId);
+
+            $node->moveToLeftOf($findRightNode);
+        }
+
+        return response()->make('', Response::HTTP_NO_CONTENT);
     }
 
     /**
