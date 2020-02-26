@@ -17,7 +17,7 @@ module.exports = function (mix) {
         'vendor/ckeditor/ckeditor/adapters/jquery.js',
     ], 'public/arbory/js/vendor.js');
 
-    mix.js('vendor/arbory/arbory/resources/assets/js/include/**/*.js', 'public/arbory/js/application.js');
+    mix.babel('vendor/arbory/arbory/resources/assets/js/include/**/*.js', 'public/arbory/js/application.js');
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/application.scss',
