@@ -8,17 +8,16 @@ module.exports = function (mix) {
         'js/controllers/'
     );
 
-    mix.babel([
-            'vendor/arbory/arbory/resources/assets/js/environment.js',
-            'vendor/components/jquery/jquery.min.js',
-            'vendor/components/jqueryui/jquery-ui.min.js',
-            'vendor/components/jquery-cookie/jquery.cookie.js',
-            'vendor/ckeditor/ckeditor/ckeditor.js',
-            'vendor/ckeditor/ckeditor/adapters/jquery.js',
-            'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
-        ],
-        'public/arbory/js/application.js'
-    );
+    mix.scripts([
+        'vendor/arbory/arbory/resources/assets/js/environment.js',
+        'vendor/components/jquery/jquery.min.js',
+        'vendor/components/jqueryui/jquery-ui.min.js',
+        'vendor/components/jquery-cookie/jquery.cookie.js',
+        'vendor/ckeditor/ckeditor/ckeditor.js',
+        'vendor/ckeditor/ckeditor/adapters/jquery.js',
+    ], 'public/arbory/js/vendor.js');
+
+    mix.js('vendor/arbory/arbory/resources/assets/js/include/**/*.js', 'public/arbory/js/application.js');
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/application.scss',
