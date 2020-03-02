@@ -10,6 +10,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 
 /**
  * Interface FieldInterface.
+ * @method $this translatable()
  */
 interface FieldInterface
 {
