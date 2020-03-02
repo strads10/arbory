@@ -30,7 +30,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
     /**
      * Get the evaluated contents of the object.
      *
-     * @return string
+     * @return Content
      */
     public function render()
     {
