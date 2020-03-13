@@ -4,6 +4,17 @@ return [
     'title' => 'Arbory',
     'uri' => 'admin',
 
+    /**
+     * Locale to use in CMS
+     */
+    // 'locale' => 'en',
+
+    /**
+     * Locale to use for resource translations in CMS. null value will use CMS
+     * default locale or application default locale.
+     */
+    //'resource_locale' => 'en',
+
     'locales' => [
         'en',
     ],
