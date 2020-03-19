@@ -122,7 +122,11 @@ jQuery(document).ready(() => {
         nodes.each(function () {
             let node = new Node(jQuery(this));
 
-            node.element.on('click', '> .collapser-cell > .collapser', () => node.toggleChildVisibility());
+            node.element.on('click', '> .collapser-cell > .collapser', () => {
+                /* Need to get onClick element to correctly collapse nodes after repositioning */
+                node = new Node(jQuery(this));
+                node.toggleChildVisibility()
+            });
 
             node.makeSortable({
                 items: '> li',
