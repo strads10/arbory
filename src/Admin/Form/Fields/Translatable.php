@@ -30,8 +30,14 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      */
     protected $currentLocale;
 
+    /**
+     * @var string
+     */
     protected $style = 'raw';
 
+    /**
+     * @var string
+     */
     protected $rendererClass = TranslatableFieldRenderer::class;
 
     /**
@@ -44,7 +50,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         $languages = \App::make(LanguageRepository::class);
 
         $this->field = $field;
-        $this->currentLocale = \App::getLocale();
+        $this->currentLocale = config('arbory.resource_locale');
 
         $this->locales = $languages->all()->map(function (Language $language) {
             return $language->locale;
