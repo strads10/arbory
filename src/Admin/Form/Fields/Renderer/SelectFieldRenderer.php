@@ -11,6 +11,9 @@ class SelectFieldRenderer extends ControlFieldRenderer
      */
     protected $field;
 
+    /**
+     * @return \Arbory\Base\Html\Elements\Content|\Arbory\Base\Html\Elements\Element
+     */
     public function render()
     {
         /**
@@ -19,7 +22,7 @@ class SelectFieldRenderer extends ControlFieldRenderer
         $control = $this->getControl();
         $control = $this->configureControl($control);
 
-        $control->setOptions($this->field->getOptions()->prepend('', '')->all());
+        $control->setOptions($this->getOptions());
         $control->setSelected($this->field->getValue());
 
         $element = $control->element();
@@ -35,5 +38,19 @@ class SelectFieldRenderer extends ControlFieldRenderer
         }
 
         return $control->render($element);
+    }
+
+    /**
+     * @return array
+     */
+    private function getOptions(): array
+    {
+        $options = $this->field->getOptions();
+
+        if ($this->field->isShowEmptyOption()) {
+            $options->prepend('', '');
+        }
+
+        return $options->all();
     }
 }
