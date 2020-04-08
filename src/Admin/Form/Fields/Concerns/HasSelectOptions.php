@@ -15,6 +15,29 @@ trait HasSelectOptions
     protected $options;
 
     /**
+     * @var bool
+     */
+    private $showEmptyOption = true;
+
+    /**
+     * @return $this
+     */
+    public function disableEmptyOption(): self
+    {
+        $this->showEmptyOption = false;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowEmptyOption(): bool
+    {
+        return $this->showEmptyOption;
+    }
+
+    /**
      * @param Collection|array $options
      * @return $this
      */
